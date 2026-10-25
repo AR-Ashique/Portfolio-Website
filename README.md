@@ -1,4 +1,4 @@
-# Biomedical Engineering Portfolio — React & Vite
+# Portfolio — React & Vite
 
 A modern, animated, and responsive personal portfolio website built with React and Vite. Originally customized for **MD. Ashiqur Rahman**, a Biomedical Engineering student at Chittagong University of Engineering and Technology (CUET), Bangladesh.
 
