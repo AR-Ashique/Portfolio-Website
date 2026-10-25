@@ -1,30 +1,30 @@
 import {
-  ArrowDownRight, ArrowUpRight, Activity, BrainCircuit, Code2,
-  Mail, Menu, Microscope, Sparkles, Terminal, Users, X
+  ArrowDownRight, ArrowUpRight, Activity, BrainCircuit, Code2, Mail, Menu,
+  Microscope, Sparkles, Terminal, Users, X
 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { GithubIcon, LinkedinIcon } from "./components/Icons";
 import "./App.css";
 
 const projects = [
   {
     number: "01",
-    type: "PYTHON · LEARNING",
+    type: "PYTHON · PROGRAMMING",
     title: "Python Projects",
     description:
-      "A collection of programming practice and small projects as I build my skills in Python and problem-solving.",
-    tags: ["Python", "Problem-solving", "Learning in public"],
-    href: "https://github.com/AR-Ashique",
+      "A collection of Python projects that reflects my programming practice and growing problem-solving skills.",
+    tags: ["Python", "Programming", "Problem-solving"],
+    href: "https://github.com/AR-Ashique/Python_Projects",
     icon: Terminal,
   },
   {
     number: "02",
-    type: "BIOMEDICAL ENGINEERING",
-    title: "Ideas at the intersection",
+    type: "WEB DEVELOPMENT · PERSONAL PROJECT",
+    title: "Portfolio Website",
     description:
-      "Exploring how engineering, data, and technology can support better healthcare. This space will grow as I develop and publish project work.",
-    tags: ["Biomedical technology", "Data", "Research"],
-    href: "https://github.com/AR-Ashique",
+      "A personal portfolio website built to present my background, skills, and projects in a clear, responsive format.",
+    tags: ["Web development", "Portfolio", "Responsive design"],
+    href: "https://github.com/AR-Ashique/Portfolio-Website",
     icon: Microscope,
   },
 ];
@@ -52,6 +52,24 @@ function App() {
   const [menuOpen, setMenuOpen] = useState(false);
   const closeMenu = () => setMenuOpen(false);
 
+  // Reveal elements while they are in view. Removing the class on exit makes
+  // the same transition reverse naturally when the visitor scrolls upward.
+  useEffect(() => {
+    const elements = document.querySelectorAll("[data-reveal]");
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduceMotion) {
+      elements.forEach((element) => element.classList.add("is-visible"));
+      return;
+    }
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        entry.target.classList.toggle("is-visible", entry.isIntersecting);
+      });
+    }, { threshold: 0.16, rootMargin: "0px 0px -6% 0px" });
+    elements.forEach((element) => observer.observe(element));
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <div className="site-shell">
       <div className="ambient ambient-one" />
@@ -74,7 +92,7 @@ function App() {
 
       <main>
         <section className="hero section-wrap" id="home">
-          <div className="hero-copy">
+          <div className="hero-copy" data-reveal="fade-up">
             <div className="availability"><span className="status-pulse" /> BIOMEDICAL ENGINEERING STUDENT</div>
             <h1>Curious mind.<br /><span className="gradient-text">Human-centered</span><br />technology.</h1>
             <p className="hero-intro">
@@ -89,7 +107,7 @@ function App() {
               <a href="https://www.linkedin.com/in/ashiqurrahman2/" target="_blank" rel="noreferrer"><LinkedinIcon size={17} /> LinkedIn <ArrowUpRight size={13} /></a>
             </div>
           </div>
-          <div className="hero-art" aria-label="Abstract biomedical technology illustration">
+          <div className="hero-art" data-reveal="fade-scale" aria-label="Abstract biomedical technology illustration">
             <div className="orbit orbit-a" /><div className="orbit orbit-b" /><div className="orbit orbit-c" />
             <div className="hero-core">
               <div className="core-cross"><span /><span /></div>
@@ -104,8 +122,8 @@ function App() {
         </section>
 
         <section className="about-section section-wrap section-pad" id="about">
-          <div className="about-label"><span className="eyebrow"><span className="eyebrow-dot" /> A LITTLE ABOUT ME</span><span className="big-index">01</span></div>
-          <div className="about-content">
+          <div className="about-label" data-reveal="slide-left"><span className="eyebrow"><span className="eyebrow-dot" /> A LITTLE ABOUT ME</span><img className="profile-photo" src="/profile-photo.jpg" alt="MD. Ashiqur Rahman" /><span className="profile-caption">MD. ASHIQUR RAHMAN</span><span className="big-index">01</span></div>
+          <div className="about-content" data-reveal="slide-right">
             <SectionHeading eyebrow="ABOUT" title={<>Building skills to<br /><span className="muted-title">solve real problems.</span></>} />
             <p className="about-lead">I’m at the beginning of my journey in biomedical engineering, building a foundation in programming, data, and creative problem-solving.</p>
             <p className="body-copy">I enjoy learning how different disciplines can work together—from engineering principles to digital tools—to help address real-world challenges. I value teamwork, clear communication, and steady progress, and I’m keen to turn what I learn into practical projects.</p>
@@ -118,11 +136,11 @@ function App() {
         </section>
 
         <section className="skills-section section-wrap section-pad" id="skills">
-          <SectionHeading eyebrow="WHAT I'M LEARNING" title={<>My toolkit for <span className="gradient-text">what's next.</span></>} copy="A growing mix of technical tools, creative skills, and ways of working." />
-          <div className="skills-grid">
+          <div data-reveal="fade-up"><SectionHeading eyebrow="WHAT I'M LEARNING" title={<>My toolkit for <span className="gradient-text">what's next.</span></>} copy="A growing mix of technical tools, creative skills, and ways of working." /></div>
+          <div className="skills-grid" data-reveal="stagger">
             {skills.map((skill, i) => {
               const Icon = skill.icon;
-              return <article className="skill-card" key={skill.name} style={{ animationDelay: `${i * 70}ms` }}>
+              return <article className="skill-card" data-reveal-item key={skill.name} style={{ animationDelay: `${i * 70}ms` }}>
                 <div className="skill-icon"><Icon size={21} strokeWidth={1.6} /></div>
                 <span className="skill-group">{skill.group}</span>
                 <h3>{skill.name}</h3>
@@ -130,18 +148,18 @@ function App() {
               </article>;
             })}
           </div>
-          <p className="skills-note"><span className="note-star">✳</span> This toolkit is a work in progress — I'm always learning something new.</p>
+          <p className="skills-note" data-reveal="fade-up"><span className="note-star">✳</span> This toolkit is a work in progress — I'm always learning something new.</p>
         </section>
 
         <section className="projects-section section-wrap section-pad" id="projects">
-          <div className="projects-top">
+          <div className="projects-top" data-reveal="fade-up">
             <SectionHeading eyebrow="SELECTED WORK & INTERESTS" title={<>Small steps.<br /><span className="muted-title">Meaningful progress.</span></>} copy="A snapshot of what I'm exploring now. More project details will be added as my work develops." />
             <a className="text-link" href="https://github.com/AR-Ashique" target="_blank" rel="noreferrer">View GitHub profile <ArrowUpRight size={16} /></a>
           </div>
-          <div className="project-list">
+          <div className="project-list" data-reveal="scale">
             {projects.map((project) => {
               const Icon = project.icon;
-              return <a className="project-card" href={project.href} key={project.number} target="_blank" rel="noreferrer">
+              return <a className="project-card" data-reveal-item href={project.href} key={project.number} target="_blank" rel="noreferrer">
                 <div className="project-number">{project.number}</div>
                 <div className="project-visual"><Icon size={34} strokeWidth={1.25} /><span className="project-visual-orbit" /></div>
                 <div className="project-info">
@@ -157,20 +175,20 @@ function App() {
         </section>
 
         <section className="education-section section-wrap section-pad" id="education">
-          <SectionHeading eyebrow="MY BACKGROUND" title={<>Learning with <span className="gradient-text">purpose.</span></>} copy="The foundation I'm building on, one step at a time." />
-          <div className="education-timeline">
+          <div data-reveal="fade-up"><SectionHeading eyebrow="MY BACKGROUND" title={<>Learning with <span className="gradient-text">purpose.</span></>} copy="The foundation I'm building on, one step at a time." /></div>
+          <div className="education-timeline" data-reveal="timeline">
             <div className="timeline-line" />
-            <article className="education-item current">
+            <article className="education-item current" data-reveal-item>
               <span className="timeline-dot" />
               <div className="education-date">UNDERGRADUATE</div>
               <div className="education-detail"><span className="education-badge">CURRENT FOCUS</span><h3>B.Sc. in Biomedical Engineering</h3><p className="school">Chittagong University of Engineering and Technology (CUET)</p><p>Chittagong, Bangladesh</p></div>
             </article>
-            <article className="education-item">
+            <article className="education-item" data-reveal-item>
               <span className="timeline-dot" />
               <div className="education-date">2023 — 2024</div>
               <div className="education-detail"><h3>Higher Secondary Certificate (HSC)</h3><p className="school">Shaheed Police Smrity College · Dhaka</p><p>Science · GPA 5.00</p></div>
             </article>
-            <article className="education-item">
+            <article className="education-item" data-reveal-item>
               <span className="timeline-dot" />
               <div className="education-date">2019 — 2020</div>
               <div className="education-detail"><h3>Secondary School Certificate (SSC)</h3><p className="school">Sher-e-Bangla Nagar Govt. Boys' High School · Dhaka</p><p>Science · GPA 5.00</p></div>
@@ -179,7 +197,7 @@ function App() {
         </section>
 
         <section className="contact-section section-wrap" id="contact">
-          <div className="contact-panel">
+          <div className="contact-panel" data-reveal="contact-glow">
             <div className="contact-orb contact-orb-one" /><div className="contact-orb contact-orb-two" />
             <span className="eyebrow"><span className="eyebrow-dot" /> OPEN TO CONNECTIONS</span>
             <h2>Good things start<br />with a <span className="gradient-text">conversation.</span></h2>
